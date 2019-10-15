@@ -19,9 +19,13 @@ const keys = require("./config/keys");
 
 // connect to the database
 mongoose
-  .connect(keys.mongoURI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+   .connect(keys.mongoURI, {
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+      useNewUrlParser: true
+   })
+   .then(() => console.log("MongoDB Connected"))
+   .catch(err => console.log(err));
 
 // passport middleware
 app.use(passport.initialize());
