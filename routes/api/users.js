@@ -7,8 +7,8 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 // load input validation
-const validateRegisterInput = require("../../validator/register");
 const validateLoginInput = require("../../validator/login");
+const validateCCInput = require("../../validator/creditcard");
 
 // load User model
 const User = require("../../models/User");
@@ -27,24 +27,7 @@ router.post("/register", async (req, res) => {
       firstname: user.firstname,
       lastname: user.lastname,
       password: user.password,
-      email: user.email,
-      billing_address: {
-         address1: user.billing_address1,
-         address2: user.billing_address2,
-         city: user.billing_city,
-         state: user.billing_state,
-         zip: user.billing_zip,
-         country: user.billing_country
-      },
-      shipping_address: {
-         address1: user.shipping_address1,
-         address2: user.shipping_address2,
-         city: user.shipping_city,
-         state: user.shippine_state,
-         zip: user.shipping_zip,
-         country: user.shipping_country,
-         phonenumber: user.shipping_phonenumber
-      }
+      email: user.email
    });
 
    try {
@@ -70,6 +53,12 @@ router.post("/register", async (req, res) => {
 // @access  PUBLIC
 router.post("/login", async (req, res) => {
    // TODO: validate request body
+
+   const { errors, isValid } = validateLoginInput(req.body);
+   if (!isValid) {
+      return res.status(400).send(errors);
+   }
+
    try {
       const user = await User.findByCredentials(
          req.body.email,
@@ -84,11 +73,51 @@ router.post("/login", async (req, res) => {
    }
 });
 
-// @route   POST /api/users/cc
+// @route   PATCH /api/users/address
+// @desc    add/update user billing/shipping address
+// @access  PRIVATE
+router.patch("/address", auth, async (req, res) => {
+   const user = req.body;
+
+   try {
+      const billing = {
+         address1: user.billing_address1,
+         address2: user.billing_address2,
+         city: user.billing_city,
+         state: user.billing_state,
+         zip: user.billing_zip,
+         country: user.billing_country
+      };
+
+      const shipping = {
+         address1: user.shipping_address1,
+         address2: user.shipping_address2,
+         city: user.shipping_city,
+         state: user.shippine_state,
+         zip: user.shipping_zip,
+         country: user.shipping_country,
+         phonenumber: user.shipping_phonenumber
+      };
+
+      req.user.billing_address = billing;
+      req.user.shipping_address = shipping;
+      await req.user.save();
+
+      res.status(200).send({ user: req.user });
+   } catch (err) {
+      res.status(400).send({ error: err.message });
+   }
+});
+
+// @route   PATCH /api/users/cc
 // @desc    add/update user credit card
 // @access  PRIVATE
 router.patch("/cc", auth, async (req, res) => {
-   // TODO: validate request body
+   const { errors, isValid } = validateCCInput(req.body);
+   if (!isValid) {
+      return res.status(400).send(errors);
+   }
+
    try {
       const cc = {
          credit_card_name: req.body.credit_card_name,
