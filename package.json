@@ -6,9 +6,7 @@
    "scripts": {
       "client-install": "npm install --prefix client",
       "start": "node server.js",
-      "server": "nodemon server.js",
-      "client": "npm start --prefix client",
-      "dev": "concurrently \"npm run server\" \"npm run client\""
+      "server": "nodemon server.js"
    },
    "author": "Gilbert Macabuag",
    "license": "MIT",
@@ -19,7 +17,7 @@
       "express": "^4.17.1",
       "gravatar": "^1.8.0",
       "jsonwebtoken": "^8.5.1",
-      "mongoose": "^5.7.3",
+      "mongoose": "^5.7.7",
       "passport": "^0.4.0",
       "passport-jwt": "^4.0.0",
       "react-router-dom": "^5.1.2",
@@ -27,6 +25,6 @@
       "validator": "^11.1.0"
    },
    "devDependencies": {
-      "nodemon": "^1.19.3"
+      "nodemon": "^1.19.4"
    }
 }
