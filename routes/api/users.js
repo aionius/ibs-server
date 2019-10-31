@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const gravatar = require("gravatar");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
-const passport = require("passport");
 
 // load input validation
 const validateLoginInput = require("../../validator/login");
 const validateCCInput = require("../../validator/creditcard");
+const validateRegisterInput = require("../../validator/register");
+const validateAddressInput = require("../../validator/address");
 
 // load User model
 const User = require("../../models/User");
@@ -20,17 +17,13 @@ const auth = require("../../middleware/authentication");
 // @desc    register user
 // @access  PUBLIC
 router.post("/register", async (req, res) => {
-   const user = req.body;
-
-   // TODO: validate request body
-   const newUser = new User({
-      firstname: user.firstname,
-      lastname: user.lastname,
-      password: user.password,
-      email: user.email
-   });
+   const { errors, isValid } = validateRegisterInput(req.body);
+   if (!isValid) {
+      return res.status(400).send(errors);
+   }
 
    try {
+      const newUser = new User(req.body);
       const user = await User.findOne({ email: newUser.email });
       if (user) {
          return res.status(400).send({ error: "Email already registered." });
@@ -52,8 +45,6 @@ router.post("/register", async (req, res) => {
 // @desc    User login / Return JWT Token
 // @access  PUBLIC
 router.post("/login", async (req, res) => {
-   // TODO: validate request body
-
    const { errors, isValid } = validateLoginInput(req.body);
    if (!isValid) {
       return res.status(400).send(errors);
@@ -77,9 +68,13 @@ router.post("/login", async (req, res) => {
 // @desc    add/update user billing/shipping address
 // @access  PRIVATE
 router.patch("/address", auth, async (req, res) => {
-   const user = req.body;
+   const { errors, isValid } = validateAddressInput(req.body);
+   if (!isValid) {
+      return res.status(400).send(errors);
+   }
 
    try {
+      const user = req.body;
       const billing = {
          address1: user.billing_address1,
          address2: user.billing_address2,
