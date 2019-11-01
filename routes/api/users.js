@@ -129,4 +129,16 @@ router.patch("/cc", auth, async (req, res) => {
    }
 });
 
+// @path    POST /api/users/orders
+// @desc    Get all orders of user by id
+// @access  PRIVATE
+router.get("/orders", auth, async (req, res) => {
+   try {
+      await req.user.populate({ path: "orders" }).execPopulate();
+      res.status(200).send(req.user.orders);
+   } catch (error) {
+      res.status(400).send({ error: error.message });
+   }
+});
+
 module.exports = router;

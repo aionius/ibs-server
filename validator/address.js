@@ -7,9 +7,6 @@ module.exports = validateAddressInput = data => {
    data.billing_address1 = !isEmpty(data.billing_address1)
       ? data.billing_address1
       : "";
-   data.billing_address2 = !isEmpty(data.billing_address2)
-      ? data.billing_address2
-      : "";
    data.billing_city = !isEmpty(data.billing_city) ? data.billing_city : "";
    data.billing_state = !isEmpty(data.billing_state) ? data.billing_state : "";
    data.billing_zip = !isEmpty(data.billing_zip) ? data.billing_zip : "";
@@ -19,10 +16,6 @@ module.exports = validateAddressInput = data => {
 
    if (Validator.isEmpty(data.billing_address1)) {
       errors.billing_address1 = "Billing Address1 field is required";
-   }
-
-   if (Validator.isEmpty(data.billing_address2)) {
-      errors.billing_address2 = "Billing  field is required";
    }
 
    if (Validator.isEmpty(data.billing_city)) {
@@ -44,9 +37,6 @@ module.exports = validateAddressInput = data => {
    data.shipping_address1 = !isEmpty(data.shipping_address1)
       ? data.shipping_address1
       : "";
-   data.shipping_address2 = !isEmpty(data.shipping_address2)
-      ? data.shipping_address2
-      : "";
    data.shipping_city = !isEmpty(data.shipping_city) ? data.shipping_city : "";
    data.shipping_state = !isEmpty(data.shipping_state)
       ? data.shipping_state
@@ -61,10 +51,6 @@ module.exports = validateAddressInput = data => {
 
    if (Validator.isEmpty(data.shipping_address1)) {
       errors.shipping_address1 = "Shipping Address1 field is required";
-   }
-
-   if (Validator.isEmpty(data.shipping_address2)) {
-      errors.shipping_address2 = "Shipping Address2 field is required";
    }
 
    if (Validator.isEmpty(data.shipping_city)) {
@@ -89,4 +75,9 @@ module.exports = validateAddressInput = data => {
    if (Validator.isEmpty(data.shipping_phonenumber)) {
       errors.shipping_phonenumber = "Shipping Phonenumber field is required";
    }
+
+   return {
+      errors,
+      isValid: isEmpty(errors)
+   };
 };

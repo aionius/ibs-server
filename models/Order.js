@@ -33,7 +33,7 @@ const OrderSchema = new Schema({
                   type: Number
                },
                item_type: {
-                  type: Number
+                  type: String
                }
             }
          ]
@@ -41,4 +41,4 @@ const OrderSchema = new Schema({
    ]
 });
 
-module.exports = Order = mongoose.model("order", OrderSchema);
+module.exports = Order = mongoose.model("Order", OrderSchema);

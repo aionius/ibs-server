@@ -132,6 +132,12 @@ const UserSchema = new Schema(
    }
 );
 
+UserSchema.virtual("orders", {
+   ref: "Order",
+   localField: "_id",
+   foreignField: "user"
+});
+
 // statics are accessible through the model
 UserSchema.statics.findByCredentials = async (email, password) => {
    const user = await User.findOne({ email });
