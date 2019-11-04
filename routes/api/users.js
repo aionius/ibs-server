@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
          .save()
          .then(user => {
             const token = user.generateAuthToken();
-            res.status(200).send({ user, token });
+            res.status(201).send({ user, token });
          })
          .catch(error => console.log(error));
    } catch (err) {
@@ -98,7 +98,7 @@ router.patch("/address", auth, async (req, res) => {
       req.user.shipping_address = shipping;
       await req.user.save();
 
-      res.status(200).send({ user: req.user });
+      res.status(201).send({ user: req.user });
    } catch (err) {
       res.status(400).send({ error: err.message });
    }
@@ -123,7 +123,7 @@ router.patch("/cc", auth, async (req, res) => {
       req.user.credit_card_info = cc;
       await req.user.save();
 
-      res.status(200).send(req.user);
+      res.status(201).send(req.user);
    } catch (err) {
       res.status(400).send({ error: err.message });
    }

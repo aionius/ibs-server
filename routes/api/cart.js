@@ -10,7 +10,7 @@ router.post("/add", async (req, res) => {
    try {
       const order = new Order(req.body);
       await order.save();
-      res.status(200).send(req.body);
+      res.status(201).send(req.body);
    } catch (error) {
       res.status(400).send({ error: error.message });
    }
