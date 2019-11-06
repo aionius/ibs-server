@@ -8,7 +8,7 @@ const config = require("../../config/keys");
 // @desc    get new books
 // @access  PUBLIC
 router.get("/new", (req, res) => {
-   request({ uri: `${config.ibsURL}/news` }).pipe(res);
+   request({ uri: `${config.ibsURL}/new` }).pipe(res);
 });
 
 // @route   /api/books/:id
