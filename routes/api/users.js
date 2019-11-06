@@ -51,11 +51,7 @@ router.post("/login", async (req, res) => {
    }
 
    try {
-      const user = await User.findByCredentials(
-         req.body.email,
-         req.body.password
-      );
-
+      const user = await User.findByCredentials(req.body);
       const token = await user.generateAuthToken();
 
       res.status(200).send({ user, token });
@@ -114,13 +110,7 @@ router.patch("/cc", auth, async (req, res) => {
    }
 
    try {
-      const cc = {
-         credit_card_name: req.body.credit_card_name,
-         credit_card_number: req.body.credit_card_number,
-         expiration_date: req.body.expiration_date
-      };
-
-      req.user.credit_card_info = cc;
+      req.user.credit_card_info = req.body;
       await req.user.save();
 
       res.status(201).send(req.user);

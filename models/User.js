@@ -139,7 +139,7 @@ UserSchema.virtual("orders", {
 });
 
 // statics are accessible through the model
-UserSchema.statics.findByCredentials = async (email, password) => {
+UserSchema.statics.findByCredentials = async ({ email, password }) => {
    const user = await User.findOne({ email });
    if (!user) {
       throw new Error("Unable to login.");
