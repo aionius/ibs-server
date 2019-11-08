@@ -32,7 +32,7 @@ app.use("/api/books", books);
 app.use("/api/cart", cart);
 
 // set the port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // start the server and listen to port
 app.listen(port, () => console.log(`SERVER started at port ${port}.`));
